@@ -5,6 +5,10 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const Joi = require('joi');
+const UtilService = require('../services/utilService');
+const JWTService = require('../services/JWTService');
+
 module.exports = {
 
 
@@ -13,10 +17,12 @@ module.exports = {
    */
   signup: async function (req, res) {
     try {
-      let {email,password} = req.allParams();
 
-      if (!email) return res.badRequest({err: "email field is required"});
-      if (!password) return res.badRequest({err: "password field is required"});
+      let schema = Joi.object().keys({
+        email: Joi.string().required().email(),
+        password: Joi.string().required()
+      });
+      const {email,password} = await Joi.validate(req.allParams(), schema);
 
       const encryptedPassword = await UtilService.hashPassword(password);
 
@@ -24,7 +30,8 @@ module.exports = {
       return res.ok(user);
 
     } catch (err) {
-      return res.serverError({err: err})
+      if (err.name === 'ValidationError') return res.badRequest({err});
+      return res.serverError(err);
     }
   },
 
@@ -32,9 +39,27 @@ module.exports = {
    * `UserController.login()`
    */
   login: async function (req, res) {
-    return res.json({
-      todo: 'login() is not implemented yet!'
-    });
+    try {
+      let schema = Joi.object().keys({
+        email: Joi.string().required().email(),
+        password: Joi.string().required()
+      });
+      const {email,password} = await Joi.validate(req.allParams(), schema);
+
+      const user = await User.findOne({email});
+
+      if (!user) return res.notFound({err: "user does not exist!"});
+
+      const matchedPassword = await UtilService.comparePassword(password, user.password);
+      if (!matchedPassword) return res.badRequest({err: 'Unauthorized!'});
+
+      const token = JWTService.issuer({user: user.id}, '1 day');
+      return res.ok({token});
+
+    } catch (err) {
+      if (err.name === 'ValidationError') return res.badRequest({err});
+      return res.serverError(err);
+    }
   }
 
 };

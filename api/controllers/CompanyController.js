@@ -9,7 +9,8 @@ module.exports = {
     Company.create({
       name: params.name,
       city: params.city,
-      address: params.address
+      address: params.address,
+      user: req.user
     }, (err, results) => {
         if(err) {
           return res.serverError(err);

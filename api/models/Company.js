@@ -32,6 +32,10 @@ module.exports = {
     jobs: {
       collection:'Job',
       via: 'company'
+    },
+    user: {
+      model: 'User',
+      columnName: 'user_id'
     }
 
   }
