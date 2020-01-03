@@ -35,7 +35,8 @@ module.exports = {
     },
     user: {
       model: 'User',
-      columnName: 'user_id'
+      columnName: 'user_id',
+      required: true
     }
 
   }
