@@ -11,7 +11,7 @@
     "jsonwebtoken": "^9.0.0",
     "sails": "^1.2.3",
     "sails-hook-orm": "^2.1.1",
-    "sails-hook-sockets": "^2.0.0",
+    "sails-hook-sockets": "^2.0.3",
     "sails-mysql": "^3.0.0"
   },
   "devDependencies": {
