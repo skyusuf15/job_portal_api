@@ -9,10 +9,10 @@
     "bcrypt": "^3.0.7",
     "joi": "^14.3.1",
     "jsonwebtoken": "^9.0.0",
-    "sails": "^1.2.3",
+    "sails": "^1.5.3",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
-    "sails-mysql": "^1.0.1"
+    "sails-mysql": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "5.16.0"
